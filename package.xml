@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>eigen_utils</name>
+  <version>0.1.0</version>
+  <description>Utilities around the eigen library.</description>
+
+  <license>Proprietary</license>
+  <author email="mgaertner@anybotics.com">Magnus Gaertner</author>
+  <maintainer email="mgaertner@anybotics.com">Magnus Gaertner</maintainer>
+  <maintainer email="dlopez@anybotics.com">Daniel López Madrid</maintainer>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+<!--   <build_depend>cmake_clang_tools</build_depend> -->
+
+  <depend>eigen</depend>
+
+  <test_depend>gtest</test_depend>
+<!--   <test_depend>cmake_code_coverage</test_depend> -->
+</package>
