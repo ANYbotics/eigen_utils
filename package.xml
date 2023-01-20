@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>eigen_utils</name>
-  <version>0.1.6</version>
+  <version>0.1.7</version>
   <description>Utilities around the eigen library.</description>
 
   <license>Proprietary</license>
