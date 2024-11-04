@@ -1,5 +1,8 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.16.3)
 project(eigen_utils)
+
+if("$ENV{ROS_VERSION}" STREQUAL "1")
+    # gersemi: off
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -90,3 +93,68 @@ find_package(cmake_clang_tools QUIET)
 if(cmake_clang_tools_FOUND)
   add_default_clang_tooling()
 endif(cmake_clang_tools_FOUND)
+
+    # gersemi: on
+else() # ROS version 2
+    ###############
+    ## Configure ##
+    ###############
+
+    set(CMAKE_CXX_STANDARD 17)
+
+    add_compile_options(-Wall -Wextra -Wpedantic)
+
+    set(PACKAGE_DEPENDENCIES Eigen3)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+    find_package(ament_cmake REQUIRED)
+    foreach(PKG ${PACKAGE_DEPENDENCIES})
+        find_package(${PKG} REQUIRED)
+    endforeach()
+
+    ###########
+    ## Build ##
+    ###########
+
+    add_library(${PROJECT_NAME} INTERFACE)
+    target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
+
+    target_include_directories(
+        ${PROJECT_NAME}
+        INTERFACE
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+    )
+
+    ament_target_dependencies(${PROJECT_NAME} ${PACKAGE_DEPENDENCIES})
+
+    #############
+    ## Install ##
+    #############
+
+    install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
+
+    ament_export_dependencies(${PACKAGE_DEPENDENCIES})
+
+    ##########
+    ## Test ##
+    ##########
+
+    if(BUILD_TESTING)
+        find_package(ament_cmake_gtest REQUIRED)
+
+        # Test testing.hpp
+        ament_add_gtest(
+            test_${PROJECT_NAME}_testing
+            test/TestEigenUtilsTesting.cpp
+        )
+        target_link_libraries(test_${PROJECT_NAME}_testing ${PROJECT_NAME})
+
+        find_package(cmake_code_coverage QUIET)
+        if(cmake_code_coverage_FOUND)
+            add_gtest_coverage(TEST_BUILD_TARGETS test_${PROJECT_NAME}_testing)
+        endif(cmake_code_coverage_FOUND)
+    endif()
+
+    ament_package()
+endif()

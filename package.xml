@@ -1,20 +1,29 @@
-<?xml version="1.0"?>
-<package format="2">
+<?xml version='1.0' encoding='utf-8'?>
+<package format="3">
+
   <name>eigen_utils</name>
   <version>0.1.19</version>
   <description>Utilities around the eigen library.</description>
 
-  <license>Proprietary</license>
   <author email="mgaertner@anybotics.com">Magnus Gaertner</author>
   <maintainer email="mgaertner@anybotics.com">Magnus Gaertner</maintainer>
   <maintainer email="dlopez@anybotics.com">Daniel López Madrid</maintainer>
 
+  <license>Proprietary</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
-<!--   <build_depend>cmake_clang_tools</build_depend> -->
+  <buildtool_depend condition="$ROS_VERSION == 1">catkin</buildtool_depend>
+  <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
+
+<!--   <build_depend condition="$ROS_VERSION == 1">cmake_clang_tools</build_depend> -->
 
   <depend>eigen</depend>
 
-  <test_depend>gtest</test_depend>
-<!--   <test_depend>cmake_code_coverage</test_depend> -->
+  <test_depend condition="$ROS_VERSION == 1">gtest</test_depend>
+<!--   <test_depend condition="$ROS_VERSION == 1">cmake_code_coverage</test_depend> -->
+  <test_depend condition="$ROS_VERSION == 2">ament_cmake_gtest</test_depend>
+
+  <export>
+    <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>
+  </export>
+  
 </package>
