@@ -134,6 +134,15 @@ else() # ROS version 2
 
     install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
 
+    install(TARGETS ${PROJECT_NAME}
+      EXPORT export_${PROJECT_NAME}
+      LIBRARY DESTINATION lib
+      ARCHIVE DESTINATION lib
+      RUNTIME DESTINATION bin
+    )
+
+    ament_export_targets(export_${PROJECT_NAME})
+
     ament_export_dependencies(${PACKAGE_DEPENDENCIES})
 
     ##########
